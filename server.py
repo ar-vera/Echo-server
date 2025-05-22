@@ -22,9 +22,6 @@ def get_port():
 
 port = get_port()
 
-# Создаем TCP/IP сокет
-# socket.AF_INET означает протокол IPv4
-# socket.SOCK_STREAM означает протокол TCP (потоковый)
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
@@ -48,32 +45,27 @@ logging.info("Server is starting")
 sock.listen(1)
 logging.info(f"Port {port} is listening")
 
-# Основной цикл сервера для принятия и обработки клиентов
 while True:
     try:
         conn, addr = sock.accept()
         logging.info("Client is accepted")
-        logging.info(f"Client address: {addr[0]}")  # Записываем IP-адрес
-        logging.info(f"Client port: {addr[1]}")     # Записываем порт
+        logging.info(f"Client address: {addr[0]}") 
+        logging.info(f"Client port: {addr[1]}")
 
-        # Инициализируем переменную msg для накопления полученных данных от клиента
         msg = ''
 
-        # Цикл для общения с подключенным клиентом
         while True:
             data = conn.recv(1024)
             if not data:
                 logging.info("All data is accepted")
                 break
 
-            # Декодируем полученные байты в строку
             msg += data.decode('utf-8')
             while '\n' in msg:
                 line, msg = msg.split('\n', 1)
                 logging.info(f"Received from client: {line}")
                 if line.lower() == 'exit':
                     logging.info("Exit command received. Closing connection.")
-                    # Отправляем подтверждение клиенту перед закрытием соединения
                     conn.send("Server closing connection.\n".encode('utf-8'))
                     break
                 else:

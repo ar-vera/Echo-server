@@ -22,17 +22,10 @@ def get_port():
         except ValueError:
             print("Некорректный ввод. Пожалуйста, введите числовое значение номера порта.")
 
-# Получаем адрес хоста и порт от пользователя
 host = get_host()
 port = get_port()
 
-# Создаем TCP/IP сокет
-# socket.AF_INET означает протокол IPv4
-# socket.SOCK_STREAM означает протокол TCP
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
-# Устанавливаем блокирующий режим сокета (по умолчанию он уже блокирующий)
-# Устанавливаем соединение с сервером по указанному адресу и порту
 
 try:
     sock.connect((host, port))
